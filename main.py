@@ -352,7 +352,7 @@ def download_waveform_data():
     # Calculate the sampling rate
     duration = waveform_data[1]['duration']
     num_samples = len(waveform_data[0]['0'])
-    sampling_rate = 128
+    sampling_rate = num_samples/duration
 
     # Build the response dictionary with the desired structure
     response_data = {
@@ -378,7 +378,6 @@ def download_waveform_data():
 @app.route('/store_uploaded_data', methods=['POST'])
 def store_uploaded_data():
     data = request.json
-    print("XXXXXXXXXXXXXXX")
     metadata = data['metadata']
     waveform_data = data['waveform_data']
 

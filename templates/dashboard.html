@@ -86,6 +86,8 @@
 
         
       <script>
+        let uploadedWaveformData = null;
+
         $(document).ready(function () {
             $("#collect-button").click(function () {
                 $("#collect-button").prop("disabled", true);
@@ -175,7 +177,7 @@
           try {
             const jsonText = await readFile(file);
             const data = JSON.parse(jsonText);
-        
+            uploadedWaveformData = data.waveform_data;
             // Update form fields with the metadata from the JSON file
             const metadata = data.metadata;
             $("#duration").val(metadata.duration);
@@ -200,7 +202,14 @@
             const layout = {
               title: 'Waveform Data',
               xaxis: { title: 'Time (s)' },
-              yaxis: { title: 'Amplitude' }
+              yaxis: { title: 'Amplitude' },
+              autosize: true, // Use "true" instead of "True"
+              height: 600,
+              width: null, // Use "null" instead of "None"
+              legend: {
+                x: 0.85,
+                y: 0.95
+              }
             };
         
             Plotly.newPlot("plot", traces, layout);
@@ -229,7 +238,7 @@
                 longitude: longitude,
                 location: location,
               },
-              waveform_data: waveform_data
+              waveform_data: uploadedWaveformData
             };
 
             $.ajax({
